@@ -1,9 +1,42 @@
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
-import Home from './components/pages/Home/Home';
+import { NavigationContainer } from '@react-navigation/native';
+import NextAnimeList from './components/pages/NextAnimeList/NextAnimeList';
+import AnimeWatchList from './components/pages/AnimeWatchList/AnimeWatchList';
+
+const Drawer = createDrawerNavigator();
+
+const generalScreenOptions = {
+  headerStyle: { backgroundColor: '#212121' },
+  headerTintColor: '#e8e8e8',
+  drawerType: 'slide',
+  drawerStyle: {
+    backgroundColor: '#e8e8e8',
+  },
+};
 
 const App = () => {
   return (
-    <Home />
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName='AnimeWatchList' screenOptions={generalScreenOptions}>
+        <Drawer.Screen
+          name="AnimeWatchList"
+          component={AnimeWatchList}
+          options={{
+            headerTitle: 'Anime Watch List',
+            drawerLabel: 'Anime Watch List'
+          }}
+        />
+        <Drawer.Screen
+          name="NextAnimeList"
+          component={NextAnimeList}
+          options={{
+            headerTitle: 'Next Anime List',
+            drawerLabel: 'Next Anime List'
+          }}
+        />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 };
 
