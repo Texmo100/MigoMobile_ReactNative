@@ -7,7 +7,7 @@ import AnimeWatchList from './components/pages/AnimeWatchList/AnimeWatchList';
 const Drawer = createDrawerNavigator();
 
 const generalScreenOptions = {
-  headerStyle: { backgroundColor: '#212121' },
+  headerStyle: { backgroundColor: '#000000' },
   headerTintColor: '#e8e8e8',
   drawerType: 'slide',
   drawerStyle: {

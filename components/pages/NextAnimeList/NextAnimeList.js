@@ -6,10 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const NextAnimeList = ({ navigation }) => {
     return (
         <View style={styles.app}>
-            <StatusBar
-                backgroundColor="#212121"
-                barStyle="light-content"
-            />
             <Text style={styles.text}>Next anime List Page</Text>
         </View>
     );
@@ -18,7 +14,7 @@ const NextAnimeList = ({ navigation }) => {
 const styles = StyleSheet.create({
     app: {
         flex: 1,
-        backgroundColor: '#333333',
+        backgroundColor: '#212121',
         justifyContent: 'center',
         alignItems: 'center',
     },
