@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, Dimensions } from 'react-native';
 import animeWatchList from '../../../data/animeWatchList';
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
+import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
 
 const windowWidth = Dimensions.get('screen').width;
 
@@ -31,6 +32,7 @@ const AnimeWatchList = () => {
                 data={animeWatchList}
                 renderItem={(item, index) => animeRender(item, index)}
                 keyExtractor={(item, index) => index}
+                ListHeaderComponent={AnimeListHeader}
                 ListFooterComponent={Footer}
             />
             <TouchableOpacity style={styles.createAction}>
