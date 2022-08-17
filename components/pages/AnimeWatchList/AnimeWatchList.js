@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, Dimensions } from 'react-native';
-import animeWatchList from '../../../data/animeWatchList';
+import AppContext from '../../../store/AppContext';
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
 
@@ -15,6 +15,10 @@ const Footer = () => {
 };
 
 const AnimeWatchList = () => {
+    const ctx = useContext(AppContext);
+
+    const { animeWatchList } = ctx;
+
     const animeRender = ({ item, index }) => (
         <AnimeCard
             animeData={item}
