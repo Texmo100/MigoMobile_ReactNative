@@ -5,7 +5,7 @@ const AppContext = React.createContext({
     nextAnimeList: [],
     searchTerm: "",
     onSearchHandler: (searchParam) => {},
-    onAddAnime: (type, anime) => {}
+    onAddAnime: async (type, anime) => {}
 });
 
 export default AppContext;
