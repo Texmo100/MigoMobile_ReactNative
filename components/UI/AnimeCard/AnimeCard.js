@@ -44,7 +44,11 @@ const AnimeCard = ({ animeData, index }) => {
                 <Text style={styles.cardInfoLabelGenres}>Genres: </Text>
                 <View style={styles.genres}>
                     {
+                        genres 
+                        ? 
                         genres.map((genre, index) => <Genre key={index} genre={genre}/>)
+                        :
+                        null
                     }
                 </View>
             </TouchableOpacity>
