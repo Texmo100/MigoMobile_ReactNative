@@ -26,59 +26,48 @@ const AppProvider = props => {
 
     const { searchTerm } = state;
 
-    const ref = firestore().collection('animes');
+    const animesRef = firestore().collection('animes');
+    const nextAnimesRef = firestore().collection('nextAnimes');
 
     useEffect(() => {
-        return ref.onSnapshot((querySnapshot, error) => {
-            if(error || !querySnapshot) {
+        return animesRef.onSnapshot((querySnapshot, error) => {
+            if (error || !querySnapshot) {
                 console.log(error);
             }
 
             const list = [];
             querySnapshot.forEach(doc => {
-                const {
-                    title,
-                    episodes,
-                    seasons,
-                    genres,
-                    status,
-                    score,
-                    description,
-                    personalComments,
-
-                } = doc.data();
-
-                list.push({
-                    id: doc.id,
-                    title,
-                    episodes,
-                    seasons,
-                    genres,
-                    status,
-                    score,
-                    description,
-                    personalComments,
-                });
+                list.push(doc.data());
             });
 
             dispatch({ type: 'ANIMEWATCHLIST', value: list });
         });
-
     }, []);
 
-    // useEffect(() => {
-    //     const animeCloneList = [...initialState.animeWatchList];
-    //     const newAnimeList = [...animeCloneList].filter(anime => animeSearcher(anime.title.toLowerCase(), searchTerm));
-    //     dispatch({ type: 'SEARCHANIME', value: newAnimeList });
-    // }, [searchTerm]);
+    useEffect(() => {
+        return animesRef.onSnapshot((querySnapshot, error) => {
+            if (error || !querySnapshot) {
+                console.log(error);
+            }
 
-    // const animeSearcher = (animeTitle, objective) => animeTitle.includes(objective) ? true : false;
+            const list = [];
+            querySnapshot.forEach(doc => {
+                list.push(doc.data());
+            });
+
+            const newAnimeList = [...list].filter(anime => animeSearcher(anime.title.toLowerCase(), searchTerm));
+
+            dispatch({ type: 'ANIMEWATCHLIST', value: newAnimeList });
+        });
+    }, [searchTerm]);
+
+    const animeSearcher = (animeTitle, objective) => animeTitle.includes(objective) ? true : false;
 
     const onSearchHandler = searchParam => {
         dispatch({ type: 'SEARCH', value: searchParam });
     };
 
-    const onAddAnime = async(anime) => {
+    const onAddAnime = async (anime) => {
         await ref.add(anime);
     };
 

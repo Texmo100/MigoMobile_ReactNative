@@ -21,8 +21,6 @@ const nextAnimeList = [
     "Akatsuki no yona",
     "Dagashi Kashi",
     "Dance in the vapire bund",
-    "Takt.opDEstiny",
-    "Spy x Family",
     "Elfen Lied",
     "Shinmai Maou no Testament",
     "Zero no tsukaima",
