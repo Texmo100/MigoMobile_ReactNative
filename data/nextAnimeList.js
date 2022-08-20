@@ -42,7 +42,7 @@ const nextAnimeList = [
     "Mahou Tsukai no Yome",
     "Eighty Six",
     "Claymore",
-    "K Project",
+    "Project k",
     "Darwins Games",
     "Mushibugyo",
     "Ousama Ranking",
@@ -67,6 +67,7 @@ const nextAnimeList = [
     "Shirobako",
     "Kuro no Shoukanshi",
     "SSSS.Dynazenon",
+    "Kno Bijutsubu ni wa Mondai Ga Aru!",
 ];
 
 export default nextAnimeList;

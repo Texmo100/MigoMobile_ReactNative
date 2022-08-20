@@ -905,8 +905,8 @@ const animeWatchList = [
         episodes: 12,
         seasons: 1,
         genres: ["sports", "ecchi"],
-        status: "in progress",
-        score: 9.0,
+        status: "completed",
+        score: 9.8,
         description: "",
         personalComments: ""
     },

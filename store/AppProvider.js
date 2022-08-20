@@ -67,8 +67,15 @@ const AppProvider = props => {
         dispatch({ type: 'SEARCH', value: searchParam });
     };
 
-    const onAddAnime = async (anime) => {
-        await ref.add(anime);
+    const onAddAnime = async (type, anime) => {
+        switch(type) {
+            case 'anime':
+                await animesRef.add(anime);
+                break;
+            case 'nextAnime':
+                await nextAnimesRef.add(anime);
+                break;
+        }
     };
 
     const migoContext = {
