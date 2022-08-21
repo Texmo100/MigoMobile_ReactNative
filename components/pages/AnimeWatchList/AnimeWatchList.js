@@ -1,18 +1,9 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList } from 'react-native';
 import AppContext from '../../../store/AppContext';
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
-
-const windowWidth = Dimensions.get('screen').width;
-
-const Footer = () => {
-    return (
-        <View style={styles.footer}>
-            <Text style={styles.footerLabel}>Migo</Text>
-        </View>
-    );
-};
+import AnimeListFooter from '../../UI/AnimeListFooter/AnimeListFooter';
 
 const AnimeWatchList = () => {
     const ctx = useContext(AppContext);
@@ -37,7 +28,7 @@ const AnimeWatchList = () => {
                 renderItem={(item, index) => animeRender(item, index)}
                 keyExtractor={(item, index) => index}
                 ListHeaderComponent={AnimeListHeader}
-                ListFooterComponent={Footer}
+                ListFooterComponent={AnimeListFooter}
             />
             <TouchableOpacity style={styles.createAction}>
                 <Text style={styles.createIcon}>+</Text>
@@ -66,17 +57,6 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold',
     },
-    footer: {
-        width: windowWidth,
-        height: 70,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#212121'
-    },
-    footerLabel: {
-        fontSize: 20,
-        fontWeight: '300',
-    }
 });
 
 export default AnimeWatchList;
