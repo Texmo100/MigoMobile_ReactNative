@@ -2,8 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppProvider from './store/AppProvider';
-import NextAnimeList from './components/pages/NextAnimeList/NextAnimeList';
-import AnimeWatchList from './components/pages/AnimeWatchList/AnimeWatchList';
+import AnimeList from './components/pages/AnimeList/AnimeList';
 
 const Drawer = createDrawerNavigator();
 
@@ -21,22 +20,13 @@ const App = () => {
     <NavigationContainer>
       <AppProvider>
         <Drawer.Navigator initialRouteName='AnimeWatchList' screenOptions={generalScreenOptions}>
-          <Drawer.Screen
-            name="AnimeWatchList"
-            component={AnimeWatchList}
-            options={{
-              headerTitle: 'Anime Watch List',
-              drawerLabel: 'Anime Watch List'
-            }}
-          />
-          <Drawer.Screen
-            name="NextAnimeList"
-            component={NextAnimeList}
-            options={{
-              headerTitle: 'Next Anime List',
-              drawerLabel: 'Next Anime List'
-            }}
-          />
+          <Drawer.Screen name="AnimeWatchList" options={{ headerTitle: 'Anime Watch List', drawerLabel: 'Anime Watch List' }}>
+            {() => <AnimeList listType="animes"/>}
+          </Drawer.Screen>
+
+          <Drawer.Screen name="NextAnimeList" options={{ headerTitle: 'Next Anime List', drawerLabel: 'Next Anime List' }}>
+            {() => <AnimeList listType="nextAnimes"/>}
+          </Drawer.Screen>
         </Drawer.Navigator>
       </AppProvider>
     </NavigationContainer>
