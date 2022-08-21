@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useState ,useReducer, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import AppContext from './AppContext';
 
@@ -7,6 +7,7 @@ const initialState = {
     nextAnimeList: [],
     searchTerm: "",
     location: "",
+    isLoading: true,
 };
 
 const reducer = (state, action) => {
@@ -30,6 +31,7 @@ const reducer = (state, action) => {
 
 const AppProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [isLoading, setIsLoading] = useState(true);
 
     const { searchTerm, location } = state;
 
@@ -49,6 +51,10 @@ const AppProvider = props => {
                 });
     
                 dispatch({ type: 'ANIMEWATCHLIST', value: list });
+
+                if(isLoading) {
+                    setIsLoading(false);
+                }
             });
         } else if(location === 'nextAnimes') {
             return nextAnimesRef.onSnapshot((querySnapshot, error) => {
@@ -62,6 +68,10 @@ const AppProvider = props => {
                 });
     
                 dispatch({ type: 'NEXTANIMELIST', value: list });
+
+                if(isLoading) {
+                    setIsLoading(false);
+                }
             });
         }
     }, [location]);
@@ -125,6 +135,7 @@ const AppProvider = props => {
         animeWatchList: state.animeWatchList,
         nextAnimeList: state.nextAnimeList,
         searchTerm: state.searchTerm,
+        isLoading: isLoading,
         onSearchHandler: onSearchHandler,
         onLocationHandler: onLocationHandler,
         onAddAnime: onAddAnime

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, ActivityIndicator} from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AppContext from '../../../store/AppContext';
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
@@ -9,7 +9,7 @@ import AnimeListFooter from '../../UI/AnimeListFooter/AnimeListFooter';
 const AnimeList = ({ listType }) => {
     const ctx = useContext(AppContext);
 
-    const { animeWatchList, nextAnimeList, onLocationHandler } = ctx;
+    const { animeWatchList, nextAnimeList, isLoading, onLocationHandler } = ctx;
 
     if(listType === 'animes') {
         const animeRender = ({ item, index }) => (
@@ -25,6 +25,14 @@ const AnimeList = ({ listType }) => {
                 onLocationHandler('animes');
             }, [])
         );
+
+        if(isLoading) {
+            return (
+                <View style={[styles.container, styles.loading]}>
+                    <ActivityIndicator size="large" />
+                </View>
+            );
+        }
     
         return (
             <View style={styles.container}>
@@ -60,6 +68,14 @@ const AnimeList = ({ listType }) => {
                 onLocationHandler('nextAnimes');
             }, [])
         );
+
+        if(isLoading) {
+            return (
+                <View style={[styles.container, styles.loading]}>
+                    <ActivityIndicator size="large" />
+                </View>
+            );
+        }
     
         return (
             <View style={styles.container}>
@@ -86,6 +102,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#212121'
+    },
+    loading: {
+        justifyContent: 'center',
     },
     createActionAnime: {
         justifyContent: 'center',
