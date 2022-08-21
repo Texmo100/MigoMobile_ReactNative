@@ -6,6 +6,7 @@ const initialState = {
     animeWatchList: [],
     nextAnimeList: [],
     searchTerm: "",
+    location: "",
 };
 
 const reducer = (state, action) => {
@@ -13,9 +14,15 @@ const reducer = (state, action) => {
         case 'ANIMEWATCHLIST':
             const newAnimeList = action.value;
             return { ...state, animeWatchList: newAnimeList };
+        case 'NEXTANIMELIST':
+            const newNextAnimeList = action.value;
+            return { ...state, nextAnimeList: newNextAnimeList };
         case 'SEARCH':
             const newSearchTerm = action.value;
             return { ...state, searchTerm: newSearchTerm };
+        case 'LOCATION':
+            const newLocation = action.value;
+            return { ...state, location: newLocation };
         default:
             return state;
     };
@@ -24,47 +31,83 @@ const reducer = (state, action) => {
 const AppProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const { searchTerm } = state;
+    const { searchTerm, location } = state;
 
     const animesRef = firestore().collection('animes');
     const nextAnimesRef = firestore().collection('nextAnimes');
 
     useEffect(() => {
-        return animesRef.onSnapshot((querySnapshot, error) => {
-            if (error || !querySnapshot) {
-                console.log(error);
-            }
-
-            const list = [];
-            querySnapshot.forEach(doc => {
-                list.push(doc.data());
+        if(location === 'animes') {
+            return animesRef.onSnapshot((querySnapshot, error) => {
+                if (error || !querySnapshot) {
+                    console.log(error);
+                }
+    
+                const list = [];
+                querySnapshot.forEach(doc => {
+                    list.push(doc.data());
+                });
+    
+                dispatch({ type: 'ANIMEWATCHLIST', value: list });
             });
-
-            dispatch({ type: 'ANIMEWATCHLIST', value: list });
-        });
-    }, []);
+        } else if(location === 'nextAnimes') {
+            return nextAnimesRef.onSnapshot((querySnapshot, error) => {
+                if (error || !querySnapshot) {
+                    console.log(error);
+                }
+    
+                const list = [];
+                querySnapshot.forEach(doc => {
+                    list.push(doc.data());
+                });
+    
+                dispatch({ type: 'NEXTANIMELIST', value: list });
+            });
+        }
+    }, [location]);
 
     useEffect(() => {
-        return animesRef.onSnapshot((querySnapshot, error) => {
-            if (error || !querySnapshot) {
-                console.log(error);
-            }
-
-            const list = [];
-            querySnapshot.forEach(doc => {
-                list.push(doc.data());
+        if(location === 'animes') {
+            return animesRef.onSnapshot((querySnapshot, error) => {
+                if (error || !querySnapshot) {
+                    console.log(error);
+                }
+    
+                const list = [];
+                querySnapshot.forEach(doc => {
+                    list.push(doc.data());
+                });
+    
+                const newAnimeList = [...list].filter(anime => animeSearcher(anime.title.toLowerCase(), searchTerm));
+    
+                dispatch({ type: 'ANIMEWATCHLIST', value: newAnimeList });
             });
-
-            const newAnimeList = [...list].filter(anime => animeSearcher(anime.title.toLowerCase(), searchTerm));
-
-            dispatch({ type: 'ANIMEWATCHLIST', value: newAnimeList });
-        });
-    }, [searchTerm]);
+        } else if(location === 'nextAnimes') {
+            return nextAnimesRef.onSnapshot((querySnapshot, error) => {
+                if (error || !querySnapshot) {
+                    console.log(error);
+                }
+    
+                const list = [];
+                querySnapshot.forEach(doc => {
+                    list.push(doc.data());
+                });
+    
+                const newAnimeList = [...list].filter(anime => animeSearcher(anime.title.toLowerCase(), searchTerm));
+    
+                dispatch({ type: 'NEXTANIMELIST', value: newAnimeList });
+            });
+        }
+    }, [searchTerm, location]);
 
     const animeSearcher = (animeTitle, objective) => animeTitle.includes(objective) ? true : false;
 
     const onSearchHandler = searchParam => {
         dispatch({ type: 'SEARCH', value: searchParam });
+    };
+
+    const onLocationHandler = locationName => {
+        dispatch({ type: 'LOCATION', value: locationName });
     };
 
     const onAddAnime = async (type, anime) => {
@@ -83,6 +126,7 @@ const AppProvider = props => {
         nextAnimeList: state.nextAnimeList,
         searchTerm: state.searchTerm,
         onSearchHandler: onSearchHandler,
+        onLocationHandler: onLocationHandler,
         onAddAnime: onAddAnime
     };
 

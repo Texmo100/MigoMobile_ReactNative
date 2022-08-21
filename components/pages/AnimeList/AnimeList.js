@@ -9,7 +9,7 @@ import AnimeListFooter from '../../UI/AnimeListFooter/AnimeListFooter';
 const AnimeList = ({ listType }) => {
     const ctx = useContext(AppContext);
 
-    const { animeWatchList, nextAnimeList } = ctx;
+    const { animeWatchList, nextAnimeList, onLocationHandler } = ctx;
 
     if(listType === 'animes') {
         const animeRender = ({ item, index }) => (
@@ -22,11 +22,7 @@ const AnimeList = ({ listType }) => {
 
         useFocusEffect(
             useCallback(() => {
-                console.log("animeWatchList is focused now");
-                return () => {
-                    // Do something when the screen is unfocused
-                    // Useful for cleanup functions
-                };
+                onLocationHandler('animes');
             }, [])
         );
     
@@ -61,11 +57,7 @@ const AnimeList = ({ listType }) => {
 
         useFocusEffect(
             useCallback(() => {
-                console.log("nextAnimeList is focused now");
-                return () => {
-                    // Do something when the screen is unfocused
-                    // Useful for cleanup functions
-                };
+                onLocationHandler('nextAnimes');
             }, [])
         );
     
