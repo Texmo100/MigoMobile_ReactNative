@@ -1,17 +1,20 @@
-import React, { useContext, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, ActivityIndicator} from 'react-native';
+import React, { useContext, useState, useCallback } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AppContext from '../../../store/AppContext';
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
 import AnimeListFooter from '../../UI/AnimeListFooter/AnimeListFooter';
+import MigoModal from '../../UI/MigoModal/MigoModal';
 
 const AnimeList = ({ listType }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+
     const ctx = useContext(AppContext);
 
     const { animeWatchList, nextAnimeList, isLoading, onLocationHandler } = ctx;
 
-    if(listType === 'animes') {
+    if (listType === 'animes') {
         const animeRender = ({ item, index }) => (
             <AnimeCard
                 animeData={item}
@@ -26,20 +29,26 @@ const AnimeList = ({ listType }) => {
             }, [])
         );
 
-        if(isLoading) {
+        if (isLoading) {
             return (
                 <View style={[styles.container, styles.loading]}>
                     <ActivityIndicator size="large" />
                 </View>
             );
         }
-    
+
         return (
             <View style={styles.container}>
                 <StatusBar
                     backgroundColor="#000000"
                     barStyle="light-content"
                 />
+
+                <MigoModal
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                />
+
                 <FlatList
                     data={animeWatchList}
                     renderItem={(item, index) => animeRender(item, index)}
@@ -47,14 +56,14 @@ const AnimeList = ({ listType }) => {
                     ListHeaderComponent={AnimeListHeader}
                     ListFooterComponent={AnimeListFooter}
                 />
-                <TouchableOpacity style={styles.createActionAnime}>
+                <TouchableOpacity style={styles.createActionAnime} onPress={() => setModalVisible(true)}>
                     <Text style={styles.createIcon}>+</Text>
                 </TouchableOpacity>
             </View>
         );
     }
 
-    if(listType === 'nextAnimes') {
+    if (listType === 'nextAnimes') {
         const animeRender = ({ item, index }) => (
             <AnimeCard
                 animeData={item}
@@ -69,14 +78,14 @@ const AnimeList = ({ listType }) => {
             }, [])
         );
 
-        if(isLoading) {
+        if (isLoading) {
             return (
                 <View style={[styles.container, styles.loading]}>
                     <ActivityIndicator size="large" />
                 </View>
             );
         }
-    
+
         return (
             <View style={styles.container}>
                 <StatusBar
@@ -132,6 +141,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold',
     },
+
 });
 
 export default AnimeList;
