@@ -6,6 +6,7 @@ import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
 import AnimeListFooter from '../../UI/AnimeListFooter/AnimeListFooter';
 import MigoModal from '../../UI/MigoModal/MigoModal';
+import CreateForm from '../../UI/CreateForm/CreateForm';
 
 const AnimeList = ({ listType }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -44,10 +45,9 @@ const AnimeList = ({ listType }) => {
                     barStyle="light-content"
                 />
 
-                <MigoModal
-                    modalVisible={modalVisible}
-                    setModalVisible={setModalVisible}
-                />
+                <MigoModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
+                    <CreateForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
+                </MigoModal>
 
                 <FlatList
                     data={animeWatchList}
