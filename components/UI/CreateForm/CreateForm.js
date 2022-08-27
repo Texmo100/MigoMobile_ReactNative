@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, TextInput, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import animeGenres from '../../../data/animeGenres';
+import animeStatus from '../../../data/animeStatus';
+import MigoInput from '../MigoInput/MigoInput';
 
 const CreateForm = ({ modalVisible, setModalVisible }) => {
     const [title, setTitle] = useState("");
     const [episodes, setEpisodes] = useState("");
     const [seasons, setSeasons] = useState("");
-    const [genres, setGenres] = useState([]);
-    const [status, setStatus] = useState("");
+    const [genres, setGenres] = useState(animeGenres);
+    const [status, setStatus] = useState(animeStatus);
     const [score, setScore] = useState("");
     const [description, setDescription] = useState("");
     const [personalComments, setPersonalComments] = useState("");
@@ -14,75 +17,76 @@ const CreateForm = ({ modalVisible, setModalVisible }) => {
     return (
         <ScrollView style={styles.modalView}>
             <Text style={styles.formHeader}>Add anime</Text>
-            <View style={styles.formInputContainer}>
-                <Text style={styles.label}>title</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setTitle}
-                    value={title}
-                    placeholder="title"
-                />
-            </View>
+            <MigoInput
+                type="text"
+                label="title"
+                onInputChange={setTitle}
+                inputValue={title}
+                inputPlaceholder="title"
+            />
 
-            <View style={styles.formInputContainer}>
-                <Text style={styles.label}>episodes</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setEpisodes}
-                    value={episodes}
-                    placeholder="episodes"
-                    keyboardType='numeric'
-                />
-            </View>
+            <MigoInput
+                type="numeric"
+                label="episodes"
+                onInputChange={setEpisodes}
+                inputValue={episodes}
+                inputPlaceholder="episodes"
+            />
 
-            <View style={styles.formInputContainer}>
-                <Text style={styles.label}>seasons</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setSeasons}
-                    value={seasons}
-                    placeholder="seasons"
-                    keyboardType='numeric'
-                />
-            </View>
+            <MigoInput
+                type="numeric"
+                label="seasons"
+                onInputChange={setSeasons}
+                inputValue={seasons}
+                inputPlaceholder="seasons"
+            />
 
-            {/* genres */}
+            <MigoInput
+                type="selection"
+                label="genres"
+                onInputChange={setGenres}
+                inputValue={genres}
+                multiSelection={true}
+            />
 
-            {/* status */}
+            <MigoInput
+                type="selection"
+                label="status"
+                onInputChange={setStatus}
+                inputValue={status}
+                multiSelection={false}
+            />
 
-            <View style={styles.formInputContainer}>
-                <Text style={styles.label}>score</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setScore}
-                    value={score}
-                    placeholder="score"
-                    keyboardType='decimal-pad'
-                />
-            </View>
+            <MigoInput
+                type="numeric"
+                label="score"
+                onInputChange={setScore}
+                inputValue={score}
+                inputPlaceholder="score"
+            />
 
-            <View style={styles.formInputContainer}>
-                <Text style={styles.label}>description</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setDescription}
-                    value={description}
-                    placeholder="description"
-                    multiline={true}
-                    numberOfLines={4}
-                />
-            </View>
+            <MigoInput
+                type="textArea"
+                label="description"
+                onInputChange={setDescription}
+                inputValue={description}
+                inputPlaceholder="description"
+            />
 
-            <View style={styles.formInputContainer}>
-                <Text style={styles.label}>personal comments</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setPersonalComments}
-                    value={personalComments}
-                    placeholder="personal comments"
-                    multiline={true}
-                    numberOfLines={4}
-                />
+            <MigoInput
+                type="textArea"
+                label="personal comments"
+                onInputChange={setPersonalComments}
+                inputValue={personalComments}
+                inputPlaceholder="personal comments"
+            />
+            <View style={styles.formButtons}>
+                <TouchableOpacity style={[styles.formButton, styles.save]}>
+                    <Text style={[styles.buttonText, styles.saveText]}>save changes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.formButton, styles.cancel]}>
+                    <Text style={[styles.buttonText, styles.cancelText]}>cancel</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
@@ -99,21 +103,33 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
     },
-    formInputContainer: {
+    formButtons: {
+        flexDirection: 'row',
+        marginVertical: 10,
+    },
+    formButton: {
+        flex: 1,
+        height: 50,
         marginHorizontal: 10,
-        marginBottom: 20,
-        paddingHorizontal: 5,
-    },
-    label: {
-        fontSize: 20,
-        textTransform: 'capitalize',
-        color: '#e8e8e8',
-        marginBottom: 5,
-    },
-    input: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
         borderRadius: 10,
-        textAlignVertical: 'top'
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        fontSize: 15,
+        textTransform: 'capitalize'
+    },
+    save: {
+        backgroundColor: '#00FFFF',
+    },
+    saveText: {
+        color: '#2b2b2b',
+    },
+    cancel: {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    },
+    cancelText: {
+        color: '#e8e8e8',
     },
 
 });
