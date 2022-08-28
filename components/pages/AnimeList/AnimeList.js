@@ -6,7 +6,7 @@ import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
 import AnimeListFooter from '../../UI/AnimeListFooter/AnimeListFooter';
 import MigoModal from '../../UI/MigoModal/MigoModal';
-import CreateForm from '../../UI/CreateForm/CreateForm';
+import MigoForm from '../../UI/MigoForm/MigoForm';
 
 const AnimeList = ({ listType }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -50,7 +50,11 @@ const AnimeList = ({ listType }) => {
                 />
 
                 <MigoModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-                    <CreateForm setModalVisible={setModalVisible} onSubmitData={submitAnimeHandler}/>
+                    <MigoForm
+                        formType="create"
+                        setModalVisible={setModalVisible}
+                        onSubmitData={submitAnimeHandler}
+                    />
                 </MigoModal>
 
                 <FlatList

@@ -4,7 +4,7 @@ import animeGenres from '../../../data/animeGenres';
 import animeStatus from '../../../data/animeStatus';
 import MigoInput from '../MigoInput/MigoInput';
 
-const CreateForm = ({ setModalVisible, onSubmitData }) => {
+const MigoForm = ({ formType, setModalVisible, onSubmitData }) => {
     const [title, setTitle] = useState("");
     const [episodes, setEpisodes] = useState("");
     const [seasons, setSeasons] = useState("");
@@ -202,4 +202,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default CreateForm;
+export default MigoForm;
