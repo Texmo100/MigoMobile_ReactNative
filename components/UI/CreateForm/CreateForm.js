@@ -4,7 +4,7 @@ import animeGenres from '../../../data/animeGenres';
 import animeStatus from '../../../data/animeStatus';
 import MigoInput from '../MigoInput/MigoInput';
 
-const CreateForm = ({ modalVisible, setModalVisible }) => {
+const CreateForm = ({ setModalVisible, onSubmitData }) => {
     const [title, setTitle] = useState("");
     const [episodes, setEpisodes] = useState("");
     const [seasons, setSeasons] = useState("");
@@ -14,9 +14,55 @@ const CreateForm = ({ modalVisible, setModalVisible }) => {
     const [description, setDescription] = useState("");
     const [personalComments, setPersonalComments] = useState("");
 
+    const submitFormHandler = () => {
+        onSubmitData({
+            title: title,
+            episodes: episodes,
+            seasons: seasons,
+            genres: optionSubtractor(genres, true),
+            status: optionSubtractor(status, false),
+            score: score,
+            description: description,
+            personalComments: personalComments,
+        });
+    };
+
+    const optionSubtractor = (options, multi) => {
+        if(multi) {
+            const optionsSelected = [];
+            options.forEach(option => {
+                if(option.isSelected) optionsSelected.push(option.titleOption);
+            });
+            return optionsSelected;
+        }
+
+        let optionSelected = "";
+        options.forEach(option => {
+            if(option.isSelected) optionSelected = option.titleOption;
+        });
+        return optionSelected;
+    };
+
+    const closeModalHandler = () => {
+        setModalVisible(false);
+        stateCleaner();
+    };
+
+    const stateCleaner = () => {
+        setTitle("");
+        setEpisodes("");
+        setEpisodes("");
+        setSeasons("");
+        // setGenres();
+        // setStatus();
+        setScore("");
+        setDescription("");
+        setPersonalComments("");
+    };
+
     return (
         <ScrollView style={styles.modalView}>
-            <TouchableOpacity style={styles.close} onPress={() => setModalVisible(false)}>
+            <TouchableOpacity style={styles.close} onPress={() => closeModalHandler()}>
                     <Text style={styles.closeIcon}>{"<"}</Text>
             </TouchableOpacity>
 
@@ -86,10 +132,10 @@ const CreateForm = ({ modalVisible, setModalVisible }) => {
                 inputPlaceholder="personal comments"
             />
             <View style={styles.formButtons}>
-                <TouchableOpacity style={[styles.formButton, styles.save]}>
+                <TouchableOpacity style={[styles.formButton, styles.save]} onPress={() => submitFormHandler()}>
                     <Text style={[styles.buttonText, styles.saveText]}>save changes</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.formButton, styles.cancel]} onPress={() => setModalVisible(false)}>
+                <TouchableOpacity style={[styles.formButton, styles.cancel]} onPress={() => closeModalHandler()}>
                     <Text style={[styles.buttonText, styles.cancelText]}>cancel</Text>
                 </TouchableOpacity>
             </View>

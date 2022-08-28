@@ -38,6 +38,10 @@ const AnimeList = ({ listType }) => {
             );
         }
 
+        const submitAnimeHandler = animeData => {
+            console.log({animeData});
+        };
+
         return (
             <View style={styles.container}>
                 <StatusBar
@@ -46,7 +50,7 @@ const AnimeList = ({ listType }) => {
                 />
 
                 <MigoModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-                    <CreateForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
+                    <CreateForm setModalVisible={setModalVisible} onSubmitData={submitAnimeHandler}/>
                 </MigoModal>
 
                 <FlatList
