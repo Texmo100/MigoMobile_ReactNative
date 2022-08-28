@@ -16,7 +16,12 @@ const CreateForm = ({ modalVisible, setModalVisible }) => {
 
     return (
         <ScrollView style={styles.modalView}>
+            <TouchableOpacity style={styles.close} onPress={() => setModalVisible(false)}>
+                    <Text style={styles.closeIcon}>{"<"}</Text>
+            </TouchableOpacity>
+
             <Text style={styles.formHeader}>Add anime</Text>
+
             <MigoInput
                 type="text"
                 label="title"
@@ -84,7 +89,7 @@ const CreateForm = ({ modalVisible, setModalVisible }) => {
                 <TouchableOpacity style={[styles.formButton, styles.save]}>
                     <Text style={[styles.buttonText, styles.saveText]}>save changes</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.formButton, styles.cancel]}>
+                <TouchableOpacity style={[styles.formButton, styles.cancel]} onPress={() => setModalVisible(false)}>
                     <Text style={[styles.buttonText, styles.cancelText]}>cancel</Text>
                 </TouchableOpacity>
             </View>
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
     formHeader: {
         alignSelf: 'center',
         fontSize: 30,
-        marginTop: 20,
+        marginTop: 50,
         marginBottom: 10,
     },
     formButtons: {
@@ -120,16 +125,33 @@ const styles = StyleSheet.create({
         textTransform: 'capitalize'
     },
     save: {
-        backgroundColor: '#00FFFF',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
     },
     saveText: {
-        color: '#2b2b2b',
+        color: '#e8e8e8',
     },
     cancel: {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        backgroundColor: '#922B21',
     },
     cancelText: {
         color: '#e8e8e8',
+    },
+    close: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 70,
+        height: 45,
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        position: 'absolute',
+        top: 10,
+        left: 0,
+    },
+    closeIcon: {
+        fontSize: 20,
+        textTransform: 'uppercase',
+        color: '#E30B5C',
     },
 
 });
