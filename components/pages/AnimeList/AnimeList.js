@@ -13,7 +13,7 @@ const AnimeList = ({ listType }) => {
 
     const ctx = useContext(AppContext);
 
-    const { animeWatchList, nextAnimeList, isLoading, onLocationHandler } = ctx;
+    const { animeWatchList, nextAnimeList, isLoading, onLocationHandler, onAddAnime } = ctx;
 
     if (listType === 'animes') {
         const animeRender = ({ item, index }) => (
@@ -39,7 +39,7 @@ const AnimeList = ({ listType }) => {
         }
 
         const submitAnimeHandler = animeData => {
-            console.log({animeData});
+            onAddAnime('anime', animeData);
         };
 
         return (
