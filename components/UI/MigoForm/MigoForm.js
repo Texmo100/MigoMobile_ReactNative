@@ -13,18 +13,43 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData }) => {
     const [score, setScore] = useState("");
     const [description, setDescription] = useState("");
     const [personalComments, setPersonalComments] = useState("");
+    const [isFormValid, setIsFormValid] = useState(true);
 
     const submitFormHandler = () => {
-        onSubmitData({
+        const genresValue = optionSubtractor(genres, true);
+        const statusValue = optionSubtractor(status, false);
+
+        const animeData = {
             title: title,
             episodes: episodes,
             seasons: seasons,
-            genres: optionSubtractor(genres, true),
-            status: optionSubtractor(status, false),
+            genres: genresValue,
+            status: statusValue,
             score: score,
             description: description,
             personalComments: personalComments,
-        });
+        };
+
+        if(!formValidator(animeData)) {
+            setIsFormValid(false);
+        } else {
+            setIsFormValid(true);
+            onSubmitData(animeData);
+            closeModalHandler();
+        }
+    };
+
+    const formValidator = formData => {
+        let flag = true;
+        if(!formData.title) flag = false;
+        if(!formData.episodes || formData.episodes === '0') flag = false;
+        if(!formData.episodes || formData.episodes === '0') flag = false;
+        if(formData.genres.lenght === 0) flag = false;
+        if(!formData.status) flag = false;
+        if(!formData.score || formData.score === '0') flag = false;
+        if(!formData.description) flag = false;
+        if(!formData.personalComments) flag = false;
+        return flag;
     };
 
     const optionSubtractor = (options, multi) => {
@@ -67,6 +92,10 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData }) => {
             </TouchableOpacity>
 
             <Text style={styles.formHeader}>Add anime</Text>
+
+            {
+                !isFormValid && <Text style={styles.errorMessage}>All the fields are required</Text>
+            }
 
             <MigoInput
                 type="text"
@@ -131,6 +160,12 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData }) => {
                 inputValue={personalComments}
                 inputPlaceholder="personal comments"
             />
+
+            {
+                !isFormValid && <Text style={styles.errorMessage}>Errors need your attention!</Text>
+            }
+
+
             <View style={styles.formButtons}>
                 <TouchableOpacity style={[styles.formButton, styles.save]} onPress={() => submitFormHandler()}>
                     <Text style={[styles.buttonText, styles.saveText]}>save changes</Text>
@@ -198,6 +233,15 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textTransform: 'uppercase',
         color: '#E30B5C',
+    },
+    errorMessage: {
+        alignSelf: 'center',
+        color: '#922B21',
+        fontSize: 15,
+        fontWeight: 'bold',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        padding: 10,
+        borderRadius: 50,
     },
 
 });
