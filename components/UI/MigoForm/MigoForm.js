@@ -8,8 +8,8 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData, animeType, animeDat
     const [title, setTitle] = useState(formType === 'update' ? animeData.title : "");
     const [episodes, setEpisodes] = useState(formType === 'update' ? animeData.episodes.toString() : "");
     const [seasons, setSeasons] = useState(formType === 'update' ? animeData.seasons.toString() : "");
-    const [genres, setGenres] = useState(animeGenres);
-    const [status, setStatus] = useState(animeStatus);
+    const [genres, setGenres] = useState(JSON.parse(JSON.stringify(animeGenres)));
+    const [status, setStatus] = useState(JSON.parse(JSON.stringify(animeStatus)));
     const [score, setScore] = useState(formType === 'update' ? animeData.score.toString() : "");
     const [description, setDescription] = useState(formType === 'update' ? animeData.description : "");
     const [personalComments, setPersonalComments] = useState(formType === 'update' ? animeData.personalComments : "");
@@ -79,8 +79,8 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData, animeType, animeDat
         setEpisodes("");
         setEpisodes("");
         setSeasons("");
-        // setGenres();
-        // setStatus();
+        setGenres(JSON.parse(JSON.stringify(animeGenres)));
+        setStatus(JSON.parse(JSON.stringify(animeStatus)));
         setScore("");
         setDescription("");
         setPersonalComments("");
