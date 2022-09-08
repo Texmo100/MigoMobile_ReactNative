@@ -16,18 +16,22 @@ const AnimeList = ({ listType }) => {
     const { animeWatchList, nextAnimeList, isLoading, onLocationHandler, onAddAnime } = ctx;
 
     if (listType === 'animes') {
+        const submitAnimeHandler = animeData => {
+            onAddAnime('anime', animeData);
+        };
+
+        useFocusEffect(
+            useCallback(() => {
+                onLocationHandler('animes');
+            }, [])
+        );
+
         const animeRender = ({ item, index }) => (
             <AnimeCard
                 animeData={item}
                 index={index}
                 type='anime'
             />
-        );
-
-        useFocusEffect(
-            useCallback(() => {
-                onLocationHandler('animes');
-            }, [])
         );
 
         if (isLoading) {
@@ -38,17 +42,12 @@ const AnimeList = ({ listType }) => {
             );
         }
 
-        const submitAnimeHandler = animeData => {
-            onAddAnime('anime', animeData);
-        };
-
         return (
             <View style={styles.container}>
                 <StatusBar
                     backgroundColor="#000000"
                     barStyle="light-content"
                 />
-
                 <MigoModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
                     <MigoForm
                         formType="create"
@@ -56,7 +55,6 @@ const AnimeList = ({ listType }) => {
                         onSubmitData={submitAnimeHandler}
                     />
                 </MigoModal>
-
                 <FlatList
                     data={animeWatchList}
                     renderItem={(item, index) => animeRender(item, index)}
@@ -72,18 +70,18 @@ const AnimeList = ({ listType }) => {
     }
 
     if (listType === 'nextAnimes') {
+        useFocusEffect(
+            useCallback(() => {
+                onLocationHandler('nextAnimes');
+            }, [])
+        );
+
         const animeRender = ({ item, index }) => (
             <AnimeCard
                 animeData={item}
                 index={index}
                 type='nextAnime'
             />
-        );
-
-        useFocusEffect(
-            useCallback(() => {
-                onLocationHandler('nextAnimes');
-            }, [])
         );
 
         if (isLoading) {
