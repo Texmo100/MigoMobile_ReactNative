@@ -47,7 +47,7 @@ const AppProvider = props => {
     
                 const list = [];
                 querySnapshot.forEach(doc => {
-                    list.push(doc.data());
+                    list.push({...doc.data(), docRef: doc.id});
                 });
     
                 dispatch({ type: 'ANIMEWATCHLIST', value: list });
@@ -64,7 +64,7 @@ const AppProvider = props => {
     
                 const list = [];
                 querySnapshot.forEach(doc => {
-                    list.push(doc.data());
+                    list.push({...doc.data(), docRef: doc.id});
                 });
     
                 dispatch({ type: 'NEXTANIMELIST', value: list });
@@ -85,7 +85,7 @@ const AppProvider = props => {
     
                 const list = [];
                 querySnapshot.forEach(doc => {
-                    list.push(doc.data());
+                    list.push({...doc.data(), docRef: doc.id});
                 });
     
                 const newAnimeList = [...list].filter(anime => animeSearcher(anime.title.toLowerCase(), searchTerm));
@@ -100,7 +100,7 @@ const AppProvider = props => {
     
                 const list = [];
                 querySnapshot.forEach(doc => {
-                    list.push(doc.data());
+                    list.push({...doc.data(), docRef: doc.id});
                 });
     
                 const newAnimeList = [...list].filter(anime => animeSearcher(anime.title.toLowerCase(), searchTerm));
@@ -131,6 +131,28 @@ const AppProvider = props => {
         }
     };
 
+    const onUpdateAnime = async (type, animeRef, anime) => {
+        switch(type) {
+            case 'anime':
+                await animesRef.doc(animeRef).update(anime);
+                break;
+            case 'nextAnime':
+                await nextAnimesRef.doc(animeRef).update(anime);
+                break;
+        }
+    };
+
+    const onDeleteAnime = async (type, animeRef) => {
+        switch(type) {
+            case 'anime':
+                await animesRef.doc(animeRef).delete();
+                break;
+            case 'nextAnime':
+                await nextAnimesRef.doc(animeRef).delete();
+                break;
+        }
+    };
+
     const migoContext = {
         animeWatchList: state.animeWatchList,
         nextAnimeList: state.nextAnimeList,
@@ -138,7 +160,9 @@ const AppProvider = props => {
         isLoading: isLoading,
         onSearchHandler: onSearchHandler,
         onLocationHandler: onLocationHandler,
-        onAddAnime: onAddAnime
+        onAddAnime: onAddAnime,
+        onUpdateAnime: onUpdateAnime,
+        onDeleteAnime: onDeleteAnime,
     };
 
     return (

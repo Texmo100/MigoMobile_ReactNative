@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import AppContext from '../../../store/AppContext';
 
 const Genre = ({ genre }) => {
     return (
@@ -11,12 +12,29 @@ const Genre = ({ genre }) => {
 
 const AnimeCard = ({ animeData, index, type }) => {
     const [isActionsShown, setIsActionsShown] = useState(false);
+    
+    const ctx = useContext(AppContext);
+    const { onDeleteAnime } = ctx;
 
     const { genres } = animeData;
 
     const actionsHandler = () => {
         setIsActionsShown(!isActionsShown);
     };
+
+    const deleteAlert = () =>
+    Alert.alert(
+      "Warning",
+      `Are you sure you want to delete ${animeData.title}?`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => onDeleteAnime(type, animeData.docRef) }
+      ]
+    );
 
     if (type === 'anime') {
         return (
@@ -57,7 +75,7 @@ const AnimeCard = ({ animeData, index, type }) => {
                     <TouchableOpacity style={isActionsShown ? styles.activeEditAction : styles.inactiveEditAction}>
                         <Text>Edit</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={isActionsShown ? styles.activeDeleteAction : styles.inactiveDeleteAction}>
+                    <TouchableOpacity style={isActionsShown ? styles.activeDeleteAction : styles.inactiveDeleteAction} onPress={deleteAlert}>
                         <Text>Delete</Text>
                     </TouchableOpacity>
                 </View>

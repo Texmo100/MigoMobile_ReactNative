@@ -9,6 +9,8 @@ const AppContext = React.createContext({
     onSearchHandler: (searchParam) => {},
     onLocationHandler: (locationName) => {},
     onAddAnime: async (type, anime) => {},
+    onUpdateAnime: async (type, animeRef, anime) => {},
+    onDeleteAnime: async (type, animeRef) => {},
 });
 
 export default AppContext;
