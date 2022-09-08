@@ -10,16 +10,44 @@ import MigoForm from '../../UI/MigoForm/MigoForm';
 
 const AnimeList = ({ listType }) => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [isCreateMode, setIsCreateMode] = useState(true);
+    const [animeHolder, setAnimeHolder] = useState({});
 
     const ctx = useContext(AppContext);
 
-    const { animeWatchList, nextAnimeList, isLoading, onLocationHandler, onAddAnime } = ctx;
+    const { animeWatchList, nextAnimeList, isLoading, onLocationHandler, onAddAnime, onUpdateAnime } = ctx;
+
+    const openUpdateForm = (animeType, animeData) => {
+        setAnimeHolder({ animeType: animeType, animeData: animeData });
+        setModalVisible(true);
+        setIsCreateMode(false);
+    };
+
+    const openCreateForm = () => {
+        setAnimeHolder({});
+        setModalVisible(true);
+        setIsCreateMode(true);
+    };
+
+    const submitAnimeHandler = (actionType, animeType, animeData) => {
+        switch(actionType) {
+            case 'create':
+                onAddAnime(animeType, animeData);
+                break;
+            case 'update':
+                const animeDocRef = animeData.docRef;
+                const cleanAnimeData = animeCleanerObj({...animeData});
+                onUpdateAnime(animeType, animeDocRef, cleanAnimeData);
+                break;
+        }
+    };
+
+    const animeCleanerObj = animeObj => {
+        delete animeObj.docRef;
+        return animeObj;
+    };
 
     if (listType === 'animes') {
-        const submitAnimeHandler = animeData => {
-            onAddAnime('anime', animeData);
-        };
-
         useFocusEffect(
             useCallback(() => {
                 onLocationHandler('animes');
@@ -31,6 +59,7 @@ const AnimeList = ({ listType }) => {
                 animeData={item}
                 index={index}
                 type='anime'
+                onUpdate={openUpdateForm}
             />
         );
 
@@ -49,11 +78,24 @@ const AnimeList = ({ listType }) => {
                     barStyle="light-content"
                 />
                 <MigoModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-                    <MigoForm
-                        formType="create"
-                        setModalVisible={setModalVisible}
-                        onSubmitData={submitAnimeHandler}
-                    />
+                    {
+                        isCreateMode
+                        ?
+                        <MigoForm
+                            formType="create"
+                            setModalVisible={setModalVisible}
+                            onSubmitData={submitAnimeHandler}
+                            animeType='anime'
+                        />
+                        :
+                        <MigoForm
+                            formType="update"
+                            setModalVisible={setModalVisible}
+                            onSubmitData={submitAnimeHandler}
+                            animeType={animeHolder.animeType}
+                            animeData={animeHolder.animeData}
+                        />
+                    }
                 </MigoModal>
                 <FlatList
                     data={animeWatchList}
@@ -62,7 +104,7 @@ const AnimeList = ({ listType }) => {
                     ListHeaderComponent={AnimeListHeader}
                     ListFooterComponent={AnimeListFooter}
                 />
-                <TouchableOpacity style={styles.createActionAnime} onPress={() => setModalVisible(true)}>
+                <TouchableOpacity style={styles.createActionAnime} onPress={openCreateForm}>
                     <Text style={styles.createIcon}>+</Text>
                 </TouchableOpacity>
             </View>

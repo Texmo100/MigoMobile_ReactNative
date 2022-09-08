@@ -10,7 +10,7 @@ const Genre = ({ genre }) => {
     );
 };
 
-const AnimeCard = ({ animeData, index, type }) => {
+const AnimeCard = ({ animeData, index, type, onUpdate }) => {
     const [isActionsShown, setIsActionsShown] = useState(false);
     
     const ctx = useContext(AppContext);
@@ -72,7 +72,7 @@ const AnimeCard = ({ animeData, index, type }) => {
                     </View>
                 </TouchableOpacity>
                 <View style={styles.cardActions}>
-                    <TouchableOpacity style={isActionsShown ? styles.activeEditAction : styles.inactiveEditAction}>
+                    <TouchableOpacity style={isActionsShown ? styles.activeEditAction : styles.inactiveEditAction} onPress={() => onUpdate(type, animeData)}>
                         <Text>Edit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={isActionsShown ? styles.activeDeleteAction : styles.inactiveDeleteAction} onPress={deleteAlert}>

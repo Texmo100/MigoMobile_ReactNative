@@ -4,22 +4,23 @@ import animeGenres from '../../../data/animeGenres';
 import animeStatus from '../../../data/animeStatus';
 import MigoInput from '../MigoInput/MigoInput';
 
-const MigoForm = ({ formType, setModalVisible, onSubmitData }) => {
-    const [title, setTitle] = useState("");
-    const [episodes, setEpisodes] = useState("");
-    const [seasons, setSeasons] = useState("");
+const MigoForm = ({ formType, setModalVisible, onSubmitData, animeType, animeData}) => {
+    const [title, setTitle] = useState(formType === 'update' ? animeData.title : "");
+    const [episodes, setEpisodes] = useState(formType === 'update' ? animeData.episodes.toString() : "");
+    const [seasons, setSeasons] = useState(formType === 'update' ? animeData.seasons.toString() : "");
     const [genres, setGenres] = useState(animeGenres);
     const [status, setStatus] = useState(animeStatus);
-    const [score, setScore] = useState("");
-    const [description, setDescription] = useState("");
-    const [personalComments, setPersonalComments] = useState("");
+    const [score, setScore] = useState(formType === 'update' ? animeData.score.toString() : "");
+    const [description, setDescription] = useState(formType === 'update' ? animeData.description : "");
+    const [personalComments, setPersonalComments] = useState(formType === 'update' ? animeData.personalComments : "");
     const [isFormValid, setIsFormValid] = useState(true);
 
     const submitFormHandler = () => {
         const genresValue = optionSubtractor(genres, true);
         const statusValue = optionSubtractor(status, false);
 
-        const animeData = {
+        const animeDataCaptured = {
+            docRef: formType === 'update' ? animeData.docRef : "",
             title: title,
             episodes: episodes,
             seasons: seasons,
@@ -30,11 +31,11 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData }) => {
             personalComments: personalComments,
         };
 
-        if(!formValidator(animeData)) {
+        if(!formValidator(animeDataCaptured)) {
             setIsFormValid(false);
         } else {
             setIsFormValid(true);
-            onSubmitData(animeData);
+            onSubmitData(formType, animeType, animeDataCaptured);
             closeModalHandler();
         }
     };
@@ -91,7 +92,13 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData }) => {
                     <Text style={styles.closeIcon}>{"<"}</Text>
             </TouchableOpacity>
 
-            <Text style={styles.formHeader}>Add anime</Text>
+            {
+                formType === 'create'
+                ?
+                <Text style={styles.formHeader}>Add anime</Text>
+                :
+                <Text style={styles.formHeader}>Edit anime</Text>
+            }
 
             {
                 !isFormValid && <Text style={styles.errorMessage}>All the fields are required</Text>
