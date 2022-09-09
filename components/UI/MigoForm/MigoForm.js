@@ -4,12 +4,32 @@ import animeGenres from '../../../data/animeGenres';
 import animeStatus from '../../../data/animeStatus';
 import MigoInput from '../MigoInput/MigoInput';
 
+const autoFillSelector = (options, selectedOptions) => {
+    const newOptions = [...options];
+
+    if(typeof(selectedOptions) === 'object') {
+        selectedOptions.forEach(selectedOption => {
+            newOptions.forEach(option => {
+                if(selectedOption === option.titleOption) option.isSelected = true;
+            });
+        });
+    } else {
+        newOptions.forEach(option => {
+            if(option.titleOption === selectedOptions) option.isSelected = true;
+        });
+    }
+    return newOptions;
+};
+
+const deepObjectCopy = objectItem => JSON.parse(JSON.stringify(objectItem));
+
+
 const MigoForm = ({ formType, setModalVisible, onSubmitData, animeType, animeData}) => {
     const [title, setTitle] = useState(formType === 'update' ? animeData.title : "");
     const [episodes, setEpisodes] = useState(formType === 'update' ? animeData.episodes.toString() : "");
     const [seasons, setSeasons] = useState(formType === 'update' ? animeData.seasons.toString() : "");
-    const [genres, setGenres] = useState(JSON.parse(JSON.stringify(animeGenres)));
-    const [status, setStatus] = useState(JSON.parse(JSON.stringify(animeStatus)));
+    const [genres, setGenres] = useState(formType === 'update' ? autoFillSelector(deepObjectCopy(animeGenres), animeData.genres) : deepObjectCopy(animeGenres));
+    const [status, setStatus] = useState(formType === 'update' ? autoFillSelector(deepObjectCopy(animeStatus), animeData.status) : deepObjectCopy(animeStatus));
     const [score, setScore] = useState(formType === 'update' ? animeData.score.toString() : "");
     const [description, setDescription] = useState(formType === 'update' ? animeData.description : "");
     const [personalComments, setPersonalComments] = useState(formType === 'update' ? animeData.personalComments : "");
