@@ -12,7 +12,7 @@ const Genre = ({ genre }) => {
 
 const AnimeCard = ({ animeData, index, type, onUpdate }) => {
     const [isActionsShown, setIsActionsShown] = useState(false);
-    
+
     const ctx = useContext(AppContext);
     const { onDeleteAnime } = ctx;
 
@@ -22,19 +22,20 @@ const AnimeCard = ({ animeData, index, type, onUpdate }) => {
         setIsActionsShown(!isActionsShown);
     };
 
-    const deleteAlert = () =>
-    Alert.alert(
-      "Warning",
-      `Are you sure you want to delete ${animeData.title}?`,
-      [
-        {
-          text: "Cancel",
-          onPress: () => {},
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => onDeleteAnime(type, animeData.docRef) }
-      ]
-    );
+    const deleteAlert = () => {
+        Alert.alert(
+            "Warning",
+            `Are you sure you want to delete ${animeData.title}?`,
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => { },
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => { onDeleteAnime(type, animeData.docRef), setIsActionsShown(false) }}
+            ]
+        );
+    }
 
     if (type === 'anime') {
         return (
@@ -72,7 +73,7 @@ const AnimeCard = ({ animeData, index, type, onUpdate }) => {
                     </View>
                 </TouchableOpacity>
                 <View style={styles.cardActions}>
-                    <TouchableOpacity style={isActionsShown ? styles.activeEditAction : styles.inactiveEditAction} onPress={() => onUpdate(type, animeData)}>
+                    <TouchableOpacity style={isActionsShown ? styles.activeEditAction : styles.inactiveEditAction} onPress={() => { onUpdate(type, animeData), setIsActionsShown(false)}}>
                         <Text>Edit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={isActionsShown ? styles.activeDeleteAction : styles.inactiveDeleteAction} onPress={deleteAlert}>

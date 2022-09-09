@@ -37,6 +37,7 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData, animeType, animeDat
             setIsFormValid(true);
             onSubmitData(formType, animeType, animeDataCaptured);
             closeModalHandler();
+            stateCleaner();
         }
     };
 
