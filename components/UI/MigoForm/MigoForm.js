@@ -7,15 +7,15 @@ import MigoInput from '../MigoInput/MigoInput';
 const autoFillSelector = (options, selectedOptions) => {
     const newOptions = [...options];
 
-    if(typeof(selectedOptions) === 'object') {
+    if (typeof (selectedOptions) === 'object') {
         selectedOptions.forEach(selectedOption => {
             newOptions.forEach(option => {
-                if(selectedOption === option.titleOption) option.isSelected = true;
+                if (selectedOption === option.titleOption) option.isSelected = true;
             });
         });
     } else {
         newOptions.forEach(option => {
-            if(option.titleOption === selectedOptions) option.isSelected = true;
+            if (option.titleOption === selectedOptions) option.isSelected = true;
         });
     }
     return newOptions;
@@ -24,68 +24,91 @@ const autoFillSelector = (options, selectedOptions) => {
 const deepObjectCopy = objectItem => JSON.parse(JSON.stringify(objectItem));
 
 
-const MigoForm = ({ formType, setModalVisible, onSubmitData, animeType, animeData}) => {
+const MigoForm = ({ formType, setModalVisible, onSubmitData, animeType, animeData }) => {
     const [title, setTitle] = useState(formType === 'update' ? animeData.title : "");
-    const [episodes, setEpisodes] = useState(formType === 'update' ? animeData.episodes.toString() : "");
-    const [seasons, setSeasons] = useState(formType === 'update' ? animeData.seasons.toString() : "");
-    const [genres, setGenres] = useState(formType === 'update' ? autoFillSelector(deepObjectCopy(animeGenres), animeData.genres) : deepObjectCopy(animeGenres));
-    const [status, setStatus] = useState(formType === 'update' ? autoFillSelector(deepObjectCopy(animeStatus), animeData.status) : deepObjectCopy(animeStatus));
-    const [score, setScore] = useState(formType === 'update' ? animeData.score.toString() : "");
-    const [description, setDescription] = useState(formType === 'update' ? animeData.description : "");
-    const [personalComments, setPersonalComments] = useState(formType === 'update' ? animeData.personalComments : "");
+    const [episodes, setEpisodes] = useState((formType === 'update' && animeType === 'anime') ? animeData.episodes.toString() : "");
+    const [seasons, setSeasons] = useState((formType === 'update' && animeType === 'anime') ? animeData.seasons.toString() : "");
+    const [genres, setGenres] = useState((formType === 'update' && animeType === 'anime') ? autoFillSelector(deepObjectCopy(animeGenres), animeData.genres) : deepObjectCopy(animeGenres));
+    const [status, setStatus] = useState((formType === 'update' && animeType === 'anime') ? autoFillSelector(deepObjectCopy(animeStatus), animeData.status) : deepObjectCopy(animeStatus));
+    const [score, setScore] = useState((formType === 'update' && animeType === 'anime') ? animeData.score.toString() : "");
+    const [description, setDescription] = useState((formType === 'update' && animeType === 'anime') ? animeData.description : "");
+    const [personalComments, setPersonalComments] = useState((formType === 'update' && animeType === 'anime') ? animeData.personalComments : "");
+    const [recommendationRate, setRecommendationRate] = useState((formType === 'update' && animeType === 'nextAnime') ? animeData.recommendationRate.toString() : "");
     const [isFormValid, setIsFormValid] = useState(true);
 
     const submitFormHandler = () => {
-        const genresValue = optionSubtractor(genres, true);
-        const statusValue = optionSubtractor(status, false);
+        if (animeType === 'anime') {
+            const genresValue = optionSubtractor(genres, true);
+            const statusValue = optionSubtractor(status, false);
 
-        const animeDataCaptured = {
-            docRef: formType === 'update' ? animeData.docRef : "",
-            title: title,
-            episodes: episodes,
-            seasons: seasons,
-            genres: genresValue,
-            status: statusValue,
-            score: score,
-            description: description,
-            personalComments: personalComments,
-        };
+            const animeDataCaptured = {
+                docRef: formType === 'update' ? animeData.docRef : "",
+                title: title,
+                episodes: episodes,
+                seasons: seasons,
+                genres: genresValue,
+                status: statusValue,
+                score: score,
+                description: description,
+                personalComments: personalComments,
+            };
 
-        if(!formValidator(animeDataCaptured)) {
-            setIsFormValid(false);
+            if (!formValidator(animeDataCaptured)) {
+                setIsFormValid(false);
+            } else {
+                setIsFormValid(true);
+                onSubmitData(formType, animeType, animeDataCaptured);
+                closeModalHandler();
+                stateCleaner();
+            }
         } else {
-            setIsFormValid(true);
-            onSubmitData(formType, animeType, animeDataCaptured);
-            closeModalHandler();
-            stateCleaner();
+            const date = new Date();
+            const currentDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+
+            const nextAnimeCaptured = {
+                docRef: formType === 'update' ? animeData.docRef : "",
+                title: title,
+                recommendationRate: recommendationRate,
+                addedAt: formType === 'create' ? currentDate.toString() : animeData.addedAt.toString(),
+                lastUpdate: currentDate.toString(),
+            };
+
+            if (!title && !recommendationRate) {
+                setIsFormValid(false);
+            } else {
+                setIsFormValid(true);
+                onSubmitData(formType, animeType, nextAnimeCaptured);
+                closeModalHandler();
+                stateCleaner();
+            }
         }
     };
 
     const formValidator = formData => {
         let flag = true;
-        if(!formData.title) flag = false;
-        if(!formData.episodes || formData.episodes === '0') flag = false;
-        if(!formData.episodes || formData.episodes === '0') flag = false;
-        if(formData.genres.lenght === 0) flag = false;
-        if(!formData.status) flag = false;
-        if(!formData.score || formData.score === '0') flag = false;
-        if(!formData.description) flag = false;
-        if(!formData.personalComments) flag = false;
+        if (!formData.title) flag = false;
+        if (!formData.episodes || formData.episodes === '0') flag = false;
+        if (!formData.episodes || formData.episodes === '0') flag = false;
+        if (formData.genres.lenght === 0) flag = false;
+        if (!formData.status) flag = false;
+        if (!formData.score || formData.score === '0') flag = false;
+        if (!formData.description) flag = false;
+        if (!formData.personalComments) flag = false;
         return flag;
     };
 
     const optionSubtractor = (options, multi) => {
-        if(multi) {
+        if (multi) {
             const optionsSelected = [];
             options.forEach(option => {
-                if(option.isSelected) optionsSelected.push(option.titleOption);
+                if (option.isSelected) optionsSelected.push(option.titleOption);
             });
             return optionsSelected;
         }
 
         let optionSelected = "";
         options.forEach(option => {
-            if(option.isSelected) optionSelected = option.titleOption;
+            if (option.isSelected) optionSelected = option.titleOption;
         });
         return optionSelected;
     };
@@ -105,89 +128,113 @@ const MigoForm = ({ formType, setModalVisible, onSubmitData, animeType, animeDat
         setScore("");
         setDescription("");
         setPersonalComments("");
+        setRecommendationRate("");
     };
 
     return (
         <ScrollView style={styles.modalView}>
             <TouchableOpacity style={styles.close} onPress={() => closeModalHandler()}>
-                    <Text style={styles.closeIcon}>{"<"}</Text>
+                <Text style={styles.closeIcon}>{"<"}</Text>
             </TouchableOpacity>
 
             {
                 formType === 'create'
-                ?
-                <Text style={styles.formHeader}>Add anime</Text>
-                :
-                <Text style={styles.formHeader}>Edit anime</Text>
+                    ?
+                    <Text style={styles.formHeader}>{animeType === 'anime' ? 'Add anime' : 'Add next anime'}</Text>
+                    :
+                    <Text style={styles.formHeader}>{animeType === 'anime' ? 'Edit anime' : 'Edit next anime'}</Text>
             }
 
             {
                 !isFormValid && <Text style={styles.errorMessage}>All the fields are required</Text>
             }
 
-            <MigoInput
-                type="text"
-                label="title"
-                onInputChange={setTitle}
-                inputValue={title}
-                inputPlaceholder="title"
-            />
+            {
+                animeType === 'anime' ?
+                    <>
+                        <MigoInput
+                            type="text"
+                            label="title"
+                            onInputChange={setTitle}
+                            inputValue={title}
+                            inputPlaceholder="title"
+                        />
 
-            <MigoInput
-                type="numeric"
-                label="episodes"
-                onInputChange={setEpisodes}
-                inputValue={episodes}
-                inputPlaceholder="episodes"
-            />
+                        <MigoInput
+                            type="numeric"
+                            label="episodes"
+                            onInputChange={setEpisodes}
+                            inputValue={episodes}
+                            inputPlaceholder="episodes"
+                        />
 
-            <MigoInput
-                type="numeric"
-                label="seasons"
-                onInputChange={setSeasons}
-                inputValue={seasons}
-                inputPlaceholder="seasons"
-            />
+                        <MigoInput
+                            type="numeric"
+                            label="seasons"
+                            onInputChange={setSeasons}
+                            inputValue={seasons}
+                            inputPlaceholder="seasons"
+                        />
 
-            <MigoInput
-                type="selection"
-                label="genres"
-                onInputChange={setGenres}
-                inputValue={genres}
-                multiSelection={true}
-            />
+                        <MigoInput
+                            type="selection"
+                            label="genres"
+                            onInputChange={setGenres}
+                            inputValue={genres}
+                            multiSelection={true}
+                        />
 
-            <MigoInput
-                type="selection"
-                label="status"
-                onInputChange={setStatus}
-                inputValue={status}
-                multiSelection={false}
-            />
+                        <MigoInput
+                            type="selection"
+                            label="status"
+                            onInputChange={setStatus}
+                            inputValue={status}
+                            multiSelection={false}
+                        />
 
-            <MigoInput
-                type="numeric"
-                label="score"
-                onInputChange={setScore}
-                inputValue={score}
-                inputPlaceholder="score"
-            />
+                        <MigoInput
+                            type="numeric"
+                            label="score"
+                            onInputChange={setScore}
+                            inputValue={score}
+                            inputPlaceholder="score"
+                        />
 
-            <MigoInput
-                type="textArea"
-                label="description"
-                onInputChange={setDescription}
-                inputValue={description}
-                inputPlaceholder="description"
-            />
+                        <MigoInput
+                            type="textArea"
+                            label="description"
+                            onInputChange={setDescription}
+                            inputValue={description}
+                            inputPlaceholder="description"
+                        />
 
-            <MigoInput
-                type="textArea"
-                label="personal comments"
-                onInputChange={setPersonalComments}
-                inputValue={personalComments}
-                inputPlaceholder="personal comments"
-            />
+                        <MigoInput
+                            type="textArea"
+                            label="personal comments"
+                            onInputChange={setPersonalComments}
+                            inputValue={personalComments}
+                            inputPlaceholder="personal comments"
+                        />
+                    </>
+                    :
+                    <>
+                        <MigoInput
+                            type="text"
+                            label="title"
+                            onInputChange={setTitle}
+                            inputValue={title}
+                            inputPlaceholder="title"
+                        />
+
+                        <MigoInput
+                            type="numeric"
+                            label="recommendation rate"
+                            onInputChange={setRecommendationRate}
+                            inputValue={recommendationRate}
+                            inputPlaceholder="recommendation rate"
+                        />
+                    </>
+            }
 
             {
                 !isFormValid && <Text style={styles.errorMessage}>Errors need your attention!</Text>

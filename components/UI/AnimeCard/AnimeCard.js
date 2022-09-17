@@ -32,90 +32,76 @@ const AnimeCard = ({ animeData, index, type, onUpdate }) => {
                     onPress: () => { },
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => { onDeleteAnime(type, animeData.docRef), setIsActionsShown(false) }}
+                { text: "OK", onPress: () => { onDeleteAnime(type, animeData.docRef), setIsActionsShown(false) } }
             ]
         );
     }
 
-    if (type === 'anime') {
-        return (
-            <View style={styles.card}>
-                <View style={styles.cardImage}>
-                    <Text style={styles.cardImageLabel}>{index}</Text>
-                </View>
-                <TouchableOpacity style={styles.cardInfo} onPress={actionsHandler}>
-                    <Text style={styles.cardInfoTitle}>{animeData.title}</Text>
-                    <Text style={styles.cardInfoLabel}>
-                        <Text style={{ fontWeight: 'bold' }}>Episodes: </Text>
-                        {animeData.episodes}
-                    </Text>
-                    <Text style={styles.cardInfoLabel}>
-                        <Text style={{ fontWeight: 'bold' }}>Seasons: </Text>
-                        {animeData.seasons}
-                    </Text>
-                    <Text style={styles.cardInfoLabel}>
-                        <Text style={{ fontWeight: 'bold' }}>Status: </Text>
-                        {animeData.status}
-                    </Text>
-                    <Text style={styles.cardInfoLabel}>
-                        <Text style={{ fontWeight: 'bold' }}>Score: </Text>
-                        {animeData.score}
-                    </Text>
-                    <Text style={styles.cardInfoLabelGenres}>Genres: </Text>
-                    <View style={styles.genres}>
-                        {
-                            genres
-                                ?
-                                genres.map((genre, index) => <Genre key={index} genre={genre} />)
-                                :
-                                null
-                        }
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.cardActions}>
-                    <TouchableOpacity style={isActionsShown ? styles.activeEditAction : styles.inactiveEditAction} onPress={() => { onUpdate(type, animeData), setIsActionsShown(false)}}>
-                        <Text>Edit</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={isActionsShown ? styles.activeDeleteAction : styles.inactiveDeleteAction} onPress={deleteAlert}>
-                        <Text>Delete</Text>
-                    </TouchableOpacity>
-                </View>
+    return (
+        <View style={styles.card}>
+            <View style={styles.cardImage}>
+                <Text style={styles.cardImageLabel}>{index}</Text>
             </View>
-        );
-    }
+            {
+                type === 'anime' 
+                ?
+                    <TouchableOpacity style={styles.cardInfo} onPress={actionsHandler}>
+                        <Text style={styles.cardInfoTitle}>{animeData.title}</Text>
+                        <Text style={styles.cardInfoLabel}>
+                            <Text style={{ fontWeight: 'bold' }}>Episodes: </Text>
+                            {animeData.episodes}
+                        </Text>
+                        <Text style={styles.cardInfoLabel}>
+                            <Text style={{ fontWeight: 'bold' }}>Seasons: </Text>
+                            {animeData.seasons}
+                        </Text>
+                        <Text style={styles.cardInfoLabel}>
+                            <Text style={{ fontWeight: 'bold' }}>Status: </Text>
+                            {animeData.status}
+                        </Text>
+                        <Text style={styles.cardInfoLabel}>
+                            <Text style={{ fontWeight: 'bold' }}>Score: </Text>
+                            {animeData.score}
+                        </Text>
+                        <Text style={styles.cardInfoLabelGenres}>Genres: </Text>
+                        <View style={styles.genres}>
+                            {
+                                genres
+                                    ?
+                                    genres.map((genre, index) => <Genre key={index} genre={genre} />)
+                                    :
+                                    null
+                            }
+                        </View>
+                    </TouchableOpacity>
+                :
+                    <TouchableOpacity style={styles.cardInfo} onPress={actionsHandler}>
+                        <Text style={styles.cardInfoTitle}>{animeData.title}</Text>
+                        <Text style={styles.cardInfoLabel}>
+                            <Text style={{ fontWeight: 'bold' }}>Recommendation Rate: </Text>
+                            {animeData.recommendationRate}
+                        </Text>
+                        <Text style={styles.cardInfoLabel}>
+                            <Text style={{ fontWeight: 'bold' }}>Added at: </Text>
+                            {animeData.addedAt}
+                        </Text>
+                        <Text style={styles.cardInfoLabel}>
+                            <Text style={{ fontWeight: 'bold' }}>last update: </Text>
+                            {animeData.lastUpdate}
+                        </Text>
+                    </TouchableOpacity>
+            }
 
-    if (type === 'nextAnime') {
-        return (
-            <View style={styles.card}>
-                <View style={styles.cardImage}>
-                    <Text style={styles.cardImageLabel}>{index}</Text>
-                </View>
-                <TouchableOpacity style={styles.cardInfo} onPress={actionsHandler}>
-                    <Text style={styles.cardInfoTitle}>{animeData.title}</Text>
-                    <Text style={styles.cardInfoLabel}>
-                        <Text style={{ fontWeight: 'bold' }}>Recommendation Rate: </Text>
-                        {animeData.recommendationRate}
-                    </Text>
-                    <Text style={styles.cardInfoLabel}>
-                        <Text style={{ fontWeight: 'bold' }}>Added at: </Text>
-                        {animeData.addedAt}
-                    </Text>
-                    <Text style={styles.cardInfoLabel}>
-                        <Text style={{ fontWeight: 'bold' }}>last update: </Text>
-                        {animeData.lastUpdate}
-                    </Text>
+            <View style={styles.cardActions}>
+                <TouchableOpacity style={isActionsShown ? styles.activeEditAction : styles.inactiveEditAction} onPress={() => { onUpdate(type, animeData), setIsActionsShown(false) }}>
+                    <Text>Edit</Text>
                 </TouchableOpacity>
-                <View style={styles.cardActions}>
-                    <TouchableOpacity style={isActionsShown ? styles.activeEditAction : styles.inactiveEditAction}>
-                        <Text>Edit</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={isActionsShown ? styles.activeDeleteAction : styles.inactiveDeleteAction}>
-                        <Text>Delete</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity style={isActionsShown ? styles.activeDeleteAction : styles.inactiveDeleteAction} onPress={deleteAlert}>
+                    <Text>Delete</Text>
+                </TouchableOpacity>
             </View>
-        );
-    }
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({

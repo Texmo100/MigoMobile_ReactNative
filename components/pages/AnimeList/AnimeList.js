@@ -47,112 +47,72 @@ const AnimeList = ({ listType }) => {
         return animeObj;
     };
 
-    if (listType === 'animes') {
-        useFocusEffect(
-            useCallback(() => {
-                onLocationHandler('animes');
-            }, [])
-        );
+    useFocusEffect(
+        useCallback(() => {
+            onLocationHandler(listType);
+        }, [])
+    );
 
-        const animeRender = ({ item, index }) => (
+    const animeRender = ({ item, index }) => {
+        return (
             <AnimeCard
                 animeData={item}
                 index={index}
-                type='anime'
+                type={listType === 'animes' ? 'anime' : 'nextAnime'}
                 onUpdate={openUpdateForm}
             />
         );
+    };
 
-        if (isLoading) {
-            return (
-                <View style={[styles.container, styles.loading]}>
-                    <ActivityIndicator size="large" />
-                </View>
-            );
-        }
-
+    if (isLoading) {
         return (
-            <View style={styles.container}>
-                <StatusBar
-                    backgroundColor="#000000"
-                    barStyle="light-content"
-                />
-                <MigoModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-                    {
-                        isCreateMode
-                        ?
-                        <MigoForm
-                            formType="create"
-                            setModalVisible={setModalVisible}
-                            onSubmitData={submitAnimeHandler}
-                            animeType='anime'
-                        />
-                        :
-                        <MigoForm
-                            formType="update"
-                            setModalVisible={setModalVisible}
-                            onSubmitData={submitAnimeHandler}
-                            animeType={animeHolder.animeType}
-                            animeData={animeHolder.animeData}
-                        />
-                    }
-                </MigoModal>
-                <FlatList
-                    data={animeWatchList}
-                    renderItem={(item, index) => animeRender(item, index)}
-                    keyExtractor={(item, index) => index}
-                    ListHeaderComponent={AnimeListHeader}
-                    ListFooterComponent={AnimeListFooter}
-                />
-                <TouchableOpacity style={styles.createActionAnime} onPress={openCreateForm}>
-                    <Text style={styles.createIcon}>+</Text>
-                </TouchableOpacity>
+            <View style={[styles.container, styles.loading]}>
+                <ActivityIndicator size="large" />
             </View>
         );
     }
 
-    if (listType === 'nextAnimes') {
-        useFocusEffect(
-            useCallback(() => {
-                onLocationHandler('nextAnimes');
-            }, [])
-        );
-
-        const animeRender = ({ item, index }) => (
-            <AnimeCard
-                animeData={item}
-                index={index}
-                type='nextAnime'
+    return (
+        <View style={styles.container}>
+            <StatusBar
+                backgroundColor="#000000"
+                barStyle="light-content"
             />
-        );
 
-        if (isLoading) {
-            return (
-                <View style={[styles.container, styles.loading]}>
-                    <ActivityIndicator size="large" />
-                </View>
-            );
-        }
+            <MigoModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
+                {
+                    isCreateMode
+                    ?
+                    <MigoForm
+                        formType="create"
+                        setModalVisible={setModalVisible}
+                        onSubmitData={submitAnimeHandler}
+                        animeType={listType === 'animes' ? 'anime' : 'nextAnime' }
+                    />
+                    :
+                    <MigoForm
+                        formType="update"
+                        setModalVisible={setModalVisible}
+                        onSubmitData={submitAnimeHandler}
+                        animeType={animeHolder.animeType}
+                        animeData={animeHolder.animeData}
+                    />
+                }
+            </MigoModal>
 
-        return (
-            <View style={styles.container}>
-                <StatusBar
-                    backgroundColor="#000000"
-                    barStyle="light-content"
-                />
-                <FlatList
-                    data={nextAnimeList}
-                    renderItem={(item, index) => animeRender(item, index)}
-                    keyExtractor={(item, index) => index}
-                    ListHeaderComponent={AnimeListHeader}
-                    ListFooterComponent={AnimeListFooter}
-                />
-                <TouchableOpacity style={styles.createActionNextAnime}>
-                    <Text style={styles.createIcon}>+</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
+            <FlatList
+                data={listType === 'animes' ? animeWatchList : nextAnimeList}
+                renderItem={(item, index) => animeRender(item, index)}
+                keyExtractor={(item, index) => index}
+                ListHeaderComponent={AnimeListHeader}
+                ListFooterComponent={AnimeListFooter}
+            />
+
+            <TouchableOpacity style={listType === 'animes' ? styles.createActionAnime : styles.createActionNextAnime} onPress={openCreateForm}>
+                <Text style={styles.createIcon}>+</Text>
+            </TouchableOpacity>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
