@@ -1,5 +1,5 @@
 import React, { useContext, useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AppContext from '../../../store/AppContext';
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
@@ -74,11 +74,6 @@ const AnimeList = ({ listType }) => {
 
     return (
         <View style={styles.container}>
-            <StatusBar
-                backgroundColor="#000000"
-                barStyle="light-content"
-            />
-
             <MigoModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
                 {
                     isCreateMode

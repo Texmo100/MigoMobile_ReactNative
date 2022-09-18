@@ -1,34 +1,20 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import MigoDrawer from './components/UI/MigoDrawer/MigoDrawer';
 import AppProvider from './store/AppProvider';
-import AnimeList from './components/pages/AnimeList/AnimeList';
+import LoginSignup from './components/pages/LoginSignup/LoginSignup';
+import Home from './components/pages/Home/Home';
 
-const Drawer = createDrawerNavigator();
-
-const generalScreenOptions = {
-  headerStyle: { backgroundColor: '#000000' },
-  headerTintColor: '#e8e8e8',
-  drawerType: 'slide',
-  drawerStyle: {
-    backgroundColor: '#e8e8e8',
-  },
-};
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <AppProvider>
-        <Drawer.Navigator initialRouteName='AnimeWatchList' screenOptions={generalScreenOptions} drawerContent={MigoDrawer}>
-          <Drawer.Screen name="AnimeWatchList" options={{ headerTitle: 'Anime Watch List', drawerLabel: 'Anime Watch List' }}>
-            {() => <AnimeList listType="animes"/>}
-          </Drawer.Screen>
-
-          <Drawer.Screen name="NextAnimeList" options={{ headerTitle: 'Next Anime List', drawerLabel: 'Next Anime List' }}>
-            {() => <AnimeList listType="nextAnimes"/>}
-          </Drawer.Screen>
-        </Drawer.Navigator>
+        <Stack.Navigator initialRouteName="loginSignup" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="loginSignup" component={LoginSignup} />
+          <Stack.Screen name="Home" component={Home} />
+        </Stack.Navigator>
       </AppProvider>
     </NavigationContainer>
   );
