@@ -108,7 +108,7 @@ const AnimeList = ({ listType }) => {
                 ListFooterComponent={AnimeListFooter}
             />
 
-            <TouchableOpacity style={listType === 'animes' ? styles.createActionAnime : styles.createActionNextAnime} onPress={openCreateForm}>
+            <TouchableOpacity style={styles.createActionAnime} onPress={openCreateForm}>
                 <Text style={styles.createIcon}>+</Text>
             </TouchableOpacity>
         </View>
@@ -130,17 +130,6 @@ const styles = StyleSheet.create({
         height: 60,
         borderRadius: 50,
         backgroundColor: '#E30B5C',
-        position: 'absolute',
-        bottom: 10,
-        right: 10,
-    },
-    createActionNextAnime: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 60,
-        height: 60,
-        borderRadius: 50,
-        backgroundColor: '#1E90FF',
         position: 'absolute',
         bottom: 10,
         right: 10,

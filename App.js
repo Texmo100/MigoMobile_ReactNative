@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import MigoDrawer from './components/UI/MigoDrawer/MigoDrawer';
 import AppProvider from './store/AppProvider';
 import AnimeList from './components/pages/AnimeList/AnimeList';
 
@@ -19,7 +20,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <AppProvider>
-        <Drawer.Navigator initialRouteName='AnimeWatchList' screenOptions={generalScreenOptions}>
+        <Drawer.Navigator initialRouteName='AnimeWatchList' screenOptions={generalScreenOptions} drawerContent={MigoDrawer}>
           <Drawer.Screen name="AnimeWatchList" options={{ headerTitle: 'Anime Watch List', drawerLabel: 'Anime Watch List' }}>
             {() => <AnimeList listType="animes"/>}
           </Drawer.Screen>
