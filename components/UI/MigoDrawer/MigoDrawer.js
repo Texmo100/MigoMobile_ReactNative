@@ -31,7 +31,6 @@ const MigoDrawer = ({ navigation, state }) => {
                 {
                     routeNames.map((item, index) => (
                         <TouchableOpacity style={styles.item} onPress={() => itemHandler(item)} key={index}>
-                            <Icon name='superpowers' size={25} color='#e8e8e8' style={styles.itemIcon} />
                             <Text style={styles.itemText}>{item}</Text>
                         </TouchableOpacity>
                     ))
