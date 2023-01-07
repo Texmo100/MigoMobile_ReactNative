@@ -1,14 +1,14 @@
-import React, {  useState, useContext, useEffect } from 'react';
+import React, {  useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { uiActions } from '../../../store/ui-slice';
 import { View, StyleSheet, TextInput } from 'react-native';
-import AppContext from '../../../store/AppContext';
 
 const AnimeListHeader = () => {
     const [ search, setSearch ] = useState("");
-    const ctx = useContext(AppContext);
-    const { onSearchHandler } = ctx;
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        onSearchHandler(search.toLowerCase());
+        dispatch(uiActions.setSearchTerm(search.toLowerCase()));
     }, [search]);
 
     return (
@@ -26,11 +26,9 @@ const AnimeListHeader = () => {
 const styles = StyleSheet.create({
     header: {
         flex: 1,
-        // backgroundColor: '#333333',
         borderRadius: 5,
         marginHorizontal: 10,
         marginVertical: 5,
-        // padding: 5,
     },
     search: {
         height: 50,

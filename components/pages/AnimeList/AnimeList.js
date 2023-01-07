@@ -1,7 +1,9 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import AppContext from '../../../store/AppContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiActions } from '../../../store/ui-slice';
+
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
 import AnimeListFooter from '../../UI/AnimeListFooter/AnimeListFooter';
@@ -13,9 +15,11 @@ const AnimeList = ({ listType }) => {
     const [isCreateMode, setIsCreateMode] = useState(true);
     const [animeHolder, setAnimeHolder] = useState({});
 
-    const ctx = useContext(AppContext);
+    const dispatch = useDispatch();
 
-    const { animeWatchList, nextAnimeList, isLoading, onLocationHandler, onAddAnime, onUpdateAnime } = ctx;
+    const animeWatchList = useSelector(state => state.anime.animeWatchList);
+    const nextAnimeList = useSelector(state => state.anime.nextAnimeList);
+    const isLoading = useSelector(state => state.ui.isLoading);
 
     const openUpdateForm = (animeType, animeData) => {
         setAnimeHolder({ animeType: animeType, animeData: animeData });
@@ -49,7 +53,7 @@ const AnimeList = ({ listType }) => {
 
     useFocusEffect(
         useCallback(() => {
-            onLocationHandler(listType);
+            dispatch(uiActions.setLocation(listType));
         }, [])
     );
 
