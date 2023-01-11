@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const uiInitialState = {
     searchTerm: '',
     location: '',
-    isLoading: false
+    isLoading: true
 };
 
 const uiSlice = createSlice({

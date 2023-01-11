@@ -1,8 +1,9 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../store/ui-slice';
+import { fetchAnimeData } from '../../../store/anime-actions';
 
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
@@ -50,6 +51,10 @@ const AnimeList = ({ listType }) => {
         delete animeObj.docRef;
         return animeObj;
     };
+
+    useEffect(() => {
+        dispatch(fetchAnimeData());
+    }, [dispatch]);
 
     useFocusEffect(
         useCallback(() => {

@@ -10,21 +10,21 @@ const animeSlice = createSlice({
     initialState: animeInitialState,
     reducers: {
         getAnimeList(state, action) {
-            const { type, animeList } = action.payload;
+            const { animeListType, animeList } = action.payload;
 
-            switch(type) {
-                case 'anime':
+            switch(animeListType) {
+                case 'animes':
                     state.animeWatchList = animeList;
                     break;
-                case 'nextAnime':
+                case 'nextAnimes':
                     state.nextAnimeList = animeList;
                     break;
             }
         },
         addAnime(state, action) {
-            const { type, anime } = action.payload;
+            const { animeType, anime } = action.payload;
 
-            switch(type) {
+            switch(animeType) {
                 case 'anime':
                     state.animeWatchList.push(anime);
                     break;
@@ -34,9 +34,9 @@ const animeSlice = createSlice({
             }
         },
         deleteAnime(state, action) {
-            const { type, id } = action.payload;
+            const { animeType, id } = action.payload;
 
-            switch(type) {
+            switch(animeType) {
                 case 'anime':
                     state.animeWatchList = state.animeWatchList.filter(anime => anime.id !== id);
                     break;
