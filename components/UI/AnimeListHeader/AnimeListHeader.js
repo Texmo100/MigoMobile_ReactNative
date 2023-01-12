@@ -1,14 +1,20 @@
 import React, {  useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { uiActions } from '../../../store/ui-slice';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, TextInput } from 'react-native';
+import { searchAnime } from '../../../store/ui-actions';
 
 const AnimeListHeader = () => {
-    const [ search, setSearch ] = useState("");
+    const [ search, setSearch ] = useState('');
     const dispatch = useDispatch();
 
+    const location = useSelector(state => state.ui.location);
+
     useEffect(() => {
-        dispatch(uiActions.setSearchTerm(search.toLowerCase()));
+        setSearch('');
+    }, [location]);
+
+    useEffect(() => {
+        dispatch(searchAnime(location, search.toLowerCase()));
     }, [search]);
 
     return (
@@ -16,7 +22,7 @@ const AnimeListHeader = () => {
             <TextInput
                 style={styles.search}
                 placeholder='Search anime'
-                onChangeText={(text) => setSearch(text)}
+                onChangeText={text => setSearch(text)}
                 value={search}
             />
         </View>
