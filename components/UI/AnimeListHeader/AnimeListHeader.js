@@ -1,7 +1,7 @@
 import React, {  useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { searchAnime } from '../../../store/ui-actions';
+import { searchAnime } from '../../../store/anime-actions';
 
 const AnimeListHeader = () => {
     const [ search, setSearch ] = useState('');
