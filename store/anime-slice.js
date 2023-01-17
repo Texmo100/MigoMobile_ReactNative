@@ -33,6 +33,20 @@ const animeSlice = createSlice({
                     break;
             }
         },
+        updateAnime(state, action) {
+            const { animeType, animeRef, animeData } = action.payload;
+
+            switch(animeType) {
+                case 'anime':
+                    const newAnimeList = [...state.animeWatchList].map(anime => anime.docRef === animeRef ? anime = {...animeData} : anime);
+                    state.animeWatchList = newAnimeList;
+                    break;
+                case 'nextAnime':
+                    const newNextAnimeList = [...state.nextAnimeList].map(anime => anime.docRef === animeRef ? anime = {...animeData} : anime);
+                    state.nextAnimeList = newNextAnimeList;
+                    break;
+            }
+        },
         deleteAnime(state, action) {
             const { animeType, animeRef } = action.payload;
 

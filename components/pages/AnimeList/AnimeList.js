@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, Activity
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../store/ui-slice';
-import { addAnimeToList, fetchAnimeData } from '../../../store/anime-actions';
+import { addAnimeToList, fetchAnimeData, updateAnimeFromList } from '../../../store/anime-actions';
 
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
@@ -43,7 +43,7 @@ const AnimeList = ({ listType }) => {
             case 'update':
                 const animeDocRef = animeData.docRef;
                 const cleanAnimeData = animeCleanerObj({...animeData});
-                onUpdateAnime(animeType, animeDocRef, cleanAnimeData);
+                dispatch(updateAnimeFromList(animeType, animeDocRef, cleanAnimeData));
                 break;
         }
     };
