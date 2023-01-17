@@ -54,3 +54,43 @@ export const searchAnime = (currentLocation, searchTerm) => {
 };
 
 const animeSearcher = (animeTitle, objective) => animeTitle.includes(objective) ? true : false;
+
+export const addAnimeToList = (animeType, anime) => {
+    return async (dispatch, getState) => {
+        const currentState = getState();
+        let currentLocation = currentState.ui.location;
+
+        await firestore()
+            .collection(currentLocation)
+            .add(anime)
+
+        dispatch(animeActions.addAnime({animeType, anime}));
+    };
+};
+
+export const updateAnimeFromList = (animeType, animeRef, anime) => {
+    let w = watch(store.getState, 'ui.location');
+
+    store.subscribe(w((newVal, oldVal) => {
+        let currentLocation = newVal === oldVal ? oldVal : newVal;
+
+        // firestore()
+        //     .collection(currentLocation)
+        //     .doc(animeRef)
+        //     .update(anime);
+    }));
+};
+
+export const deleteAnimeFromList = (animeType, animeRef) => {
+
+    let w = watch(store.getState, 'ui.location');
+
+    store.subscribe(w((newVal, oldVal) => {
+        let currentLocation = newVal === oldVal ? oldVal : newVal;
+
+        // firestore()
+        //     .collection(currentLocation)
+        //     .doc(animeRef)
+        //     .delete();
+    }));
+};

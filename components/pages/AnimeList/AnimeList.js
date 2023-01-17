@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, StatusBar, FlatList, Activity
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../store/ui-slice';
-import { fetchAnimeData } from '../../../store/anime-actions';
+import { addAnimeToList, fetchAnimeData } from '../../../store/anime-actions';
 
 import AnimeCard from '../../UI/AnimeCard/AnimeCard';
 import AnimeListHeader from '../../UI/AnimeListHeader/AnimeListHeader';
@@ -37,7 +37,8 @@ const AnimeList = ({ listType }) => {
     const submitAnimeHandler = (actionType, animeType, animeData) => {
         switch(actionType) {
             case 'create':
-                onAddAnime(animeType, animeData);
+                const newAnimeData = animeCleanerObj({...animeData});
+                dispatch(addAnimeToList(animeType, newAnimeData));
                 break;
             case 'update':
                 const animeDocRef = animeData.docRef;
