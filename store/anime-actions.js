@@ -64,7 +64,7 @@ export const addAnimeToList = (animeType, anime) => {
             .collection(currentLocation)
             .add(anime)
 
-        dispatch(animeActions.addAnime({animeType, anime}));
+        dispatch(animeActions.addAnime({ animeType, anime }));
     };
 };
 
@@ -82,15 +82,15 @@ export const updateAnimeFromList = (animeType, animeRef, anime) => {
 };
 
 export const deleteAnimeFromList = (animeType, animeRef) => {
+    return async (dispatch, getState) => {
+        const currentState = getState();
+        let currentLocation = currentState.ui.location;
 
-    let w = watch(store.getState, 'ui.location');
+        await firestore()
+            .collection(currentLocation)
+            .doc(animeRef)
+            .delete()
 
-    store.subscribe(w((newVal, oldVal) => {
-        let currentLocation = newVal === oldVal ? oldVal : newVal;
-
-        // firestore()
-        //     .collection(currentLocation)
-        //     .doc(animeRef)
-        //     .delete();
-    }));
+        dispatch(animeActions.deleteAnime({ animeType, animeRef }));
+    };
 };

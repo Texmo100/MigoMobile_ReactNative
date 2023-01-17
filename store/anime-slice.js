@@ -34,14 +34,14 @@ const animeSlice = createSlice({
             }
         },
         deleteAnime(state, action) {
-            const { animeType, id } = action.payload;
+            const { animeType, animeRef } = action.payload;
 
             switch(animeType) {
                 case 'anime':
-                    state.animeWatchList = state.animeWatchList.filter(anime => anime.id !== id);
+                    state.animeWatchList = state.animeWatchList.filter(anime => anime.docRef !== animeRef);
                     break;
                 case 'nextAnime':
-                    state.nextAnimeList = state.nextAnimeList.filter(anime => anime.id !== id);
+                    state.nextAnimeList = state.nextAnimeList.filter(anime => anime.docRef !== animeRef);
                     break;
             }
         },

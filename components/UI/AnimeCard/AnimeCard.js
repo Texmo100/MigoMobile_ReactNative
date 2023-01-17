@@ -1,6 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import AppContext from '../../../store/AppContext';
+import { deleteAnimeFromList } from '../../../store/anime-actions';
 
 const Genre = ({ genre }) => {
     return (
@@ -13,8 +14,7 @@ const Genre = ({ genre }) => {
 const AnimeCard = ({ animeData, index, type, onUpdate }) => {
     const [isActionsShown, setIsActionsShown] = useState(false);
 
-    const ctx = useContext(AppContext);
-    const { onDeleteAnime } = ctx;
+    const dispatch = useDispatch();
 
     const { genres } = animeData;
 
@@ -32,7 +32,7 @@ const AnimeCard = ({ animeData, index, type, onUpdate }) => {
                     onPress: () => { },
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => { onDeleteAnime(type, animeData.docRef), setIsActionsShown(false) } }
+                { text: "OK", onPress: () => { dispatch(deleteAnimeFromList(type, animeData.docRef)), setIsActionsShown(false) } }
             ]
         );
     }
