@@ -56,11 +56,11 @@ export const searchAnime = (currentLocation, searchTerm) => {
 const animeSearcher = (animeTitle, objective) => animeTitle.includes(objective) ? true : false;
 
 export const addAnimeToList = (animeType, anime) => {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         const currentState = getState();
         let currentLocation = currentState.ui.location;
 
-        firestore()
+        await firestore()
             .collection(currentLocation)
             .add(anime);
 
@@ -69,11 +69,11 @@ export const addAnimeToList = (animeType, anime) => {
 };
 
 export const updateAnimeFromList = (animeType, animeRef, animeData) => {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         const currentState = getState();
         let currentLocation = currentState.ui.location;
 
-        firestore()
+        await firestore()
             .collection(currentLocation)
             .doc(animeRef)
             .update(animeData);
@@ -83,11 +83,11 @@ export const updateAnimeFromList = (animeType, animeRef, animeData) => {
 };
 
 export const deleteAnimeFromList = (animeType, animeRef) => {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         const currentState = getState();
         let currentLocation = currentState.ui.location;
 
-        firestore()
+        await firestore()
             .collection(currentLocation)
             .doc(animeRef)
             .delete();
