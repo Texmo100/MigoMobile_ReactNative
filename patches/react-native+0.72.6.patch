@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js b/node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js
+index 02dc8ab..5fe2a7c 100644
+--- a/node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js
++++ b/node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js
+@@ -286,7 +286,7 @@ class TouchableOpacity extends React.Component<Props, State> {
+         hasTVPreferredFocus={this.props.hasTVPreferredFocus}
+         hitSlop={this.props.hitSlop}
+         focusable={
+-          this.props.focusable !== false && this.props.onPress !== undefined
++          this.props.focusable !== false && this.props.onPress
+         }
+         ref={this.props.hostRef}
+         {...eventHandlersWithoutBlurAndFocus}>
