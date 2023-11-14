@@ -14,7 +14,9 @@ const AnimeListHeader = () => {
     }, [location]);
 
     useEffect(() => {
-        dispatch(searchAnime(location, search.toLowerCase()));
+        setTimeout(() => {
+            dispatch(searchAnime(location, search.toLowerCase()));
+        }, 1500);
     }, [search]);
 
     return (

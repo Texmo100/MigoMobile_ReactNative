@@ -38,11 +38,11 @@ const animeSlice = createSlice({
 
             switch(animeType) {
                 case 'anime':
-                    const newAnimeList = animeWatchList.map(anime => anime.docRef === animeRef ? anime = {...animeData} : anime);
+                    const newAnimeList = state.animeWatchList.map(anime => anime.docRef === animeRef ? anime = {...animeData} : anime);
                     state.animeWatchList = newAnimeList;
                     break;
                 case 'nextAnime':
-                    const newNextAnimeList = nextAnimeList.map(anime => anime.docRef === animeRef ? anime = {...animeData} : anime);
+                    const newNextAnimeList = state.nextAnimeList.map(anime => anime.docRef === animeRef ? anime = {...animeData} : anime);
                     state.nextAnimeList = newNextAnimeList;
                     break;
             }
